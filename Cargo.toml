@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
-members = ["rust-prerequisite"]
+members = ["basic-problems","rust-prerequisite"]
 
 [workspace.dependencies]
