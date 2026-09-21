@@ -1,180 +1,169 @@
 use std::io;
 
 fn main() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let n = input.trim().parse().unwrap(); 
-    print_evens(n);
-
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace(); 
-    let l = parts.next().unwrap().parse().unwrap(); 
-    let r = parts.next().unwrap().parse().unwrap(); 
-    print_evens(n);
-    print_left_to_right(l, r);
-    print_letters();
-    count_numbers();
-    factorial();
-    exponential();
-    reverse_number();
-    sum_of_digits();
-    palindrome();
+    hollow_vertical_pyramid();
 }
 
-fn palindrome() {
+fn hollow_vertical_pyramid(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let input = input.trim();
-    let mut i = 0;
-    let mut j = input.len() - 1;
-    let mut flag = true; 
-    while i <= j {
-        let l = input.chars().nth(i); 
-        let r = input.chars().nth(j); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: usize = input.trim().parse().unwrap();
+    let mut m: usize = 1; 
+    let mut space: usize = 0; 
 
-        if l == r {
-            i += 1; 
-            j -= 1; 
-            continue
+    let mut row_stars = String::default(); 
+
+    for  i in 1..=(2*n - 1)  {
+        if m >=3 && i < n{
+            space += 2;
+            // println!("The space is {} from 1", space);  
+        }else if m >= 3 && i >= n {
+            // println!("The space is {} from 2", space);
+            space -= 2; 
         }else {
-            flag = false; 
-            break
+
         }
-    }
 
-    if flag {
-        println!("Yes")
-    }else {
-        println!("No")
-    }
-}
-
-fn sum_of_digits() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let mut n: u64 = input.trim().parse().unwrap(); 
-
-    let mut sum  = 0u64;  
-
-    while n > 0 {
-        let r = n % 10; 
-        sum += r; 
-        n = n / 10
-    }
-
-    println!("{}", sum); 
-}
-
-fn reverse_number() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let mut n: u64 = input.trim().parse().unwrap(); 
-
-    let mut ans = String::new(); 
-
-    if n == 0 {
-        ans.push_str(&"0".to_string());
-        println!("{}", ans); 
-        return 
-    }
-    while n > 0 {
-        let r = n % 10 ;
-        if r != 0 {
-            ans.push_str(&r.to_string());
-        } 
-        n = n / 10
-    }
-
-    println!("{}", ans); 
-}
-
-
-fn exponential() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace(); 
-    let l: i64 = parts.next().unwrap().parse().unwrap(); 
-    let r = parts.next().unwrap().parse().unwrap();  
-    let mut expo = 1; 
-    for _ in  1..=r {
-        if r != 0 {
-            expo *= l ; 
+        if m > 1 {
+            row_stars = "* *".to_string(); 
+        }else {
+            row_stars = "*".to_string(); 
         }
+
+        if i < n {
+            row_stars.pop(); 
+            row_stars.push_str(&" ".repeat(space));
+            row_stars.push('*'); 
+            m += 1;
+        }else if i == n {
+            row_stars.pop(); 
+            row_stars.push_str(&" ".repeat(space));
+            row_stars.push('*');
+            m -= 1;   
+        }else {
+            if m != 1 {
+                row_stars.pop(); 
+                row_stars.push_str(&" ".repeat(space));
+                row_stars.push('*');
+                m -= 1; 
+            }
+            // row_stars.remove(2); 
+        }
+        println!("{}", row_stars); 
     }
-    println!("{}", expo); 
 }
 
-fn factorial(){
+fn binary_pyramid(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let n: u64 = input.trim().parse().unwrap(); 
-    let mut fact: u64 = 1; 
-    for i in 1..=n {
-        fact *= i; 
-    } 
-
-    println!("{}", fact); 
-}
-
-fn count_numbers() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
+    io::stdin().read_line(&mut input).unwrap();
     let n: u32 = input.trim().parse().unwrap();
 
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();
-
-    let mut positive_count = 0u32; 
-    let mut negative_count = 0u32; 
-    let mut even_count = 0u32; 
-    let mut odd_count = 0u32; 
-    for _ in 0..n {
-        let num: i64 = parts.next().unwrap().parse().unwrap(); 
-        if num % 2 == 0 {
-            even_count += 1
-        }else {
-            odd_count += 1 
-        }
-
-        if num == 0 {
-            continue;
-        }
-
-        if num > 0 {
-            positive_count += 1; 
-        }else {
-            negative_count += 1; 
-        }
-    }
-
-        println!("{}", positive_count); 
-        println!("{}", negative_count);
-        println!("{}", even_count);
-        println!("{}", odd_count);
-}
-
-fn print_letters() {
-    for letter in 'A'..='Z' {
-        print!("{} ", letter)
-    }
-}
-
-fn print_left_to_right(l:i32, r: i32){
-    if l > r {
-        return 
-    }
-    for i in l..=r {
-        print!("{} ",i); 
-    }
-}
-
-fn print_evens(n:u32){
+    let mut binary = "0".to_string(); 
     for i in 1..=n {
+
+        println!("{}", binary); 
+
         if i % 2 == 0 {
-            print!("{} ",i); 
+            binary.insert(0, '0');
+        }else {
+            binary.insert(0, '1');
+        }     
+    }
+}
+
+fn number_pyramid(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for i in 1..=n {
+        println!("{}", i.to_string().repeat(i as usize)); 
+
+    }
+}
+
+fn reverse_pyramid(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for i in (1..=n).rev() {
+        println!("{}", "*".repeat(i as usize)); 
+
+    }
+}
+
+fn pyramid(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for i in 1..=n {
+        println!("{}", "*".repeat(i as usize)); 
+
+    }
+}
+
+
+fn hollow_rectangle(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let mut parts = input.split_whitespace(); 
+    let n= parts.next().unwrap().trim().parse().unwrap(); 
+    let m: usize  = parts.next().unwrap().trim().parse().unwrap(); 
+
+    for i in 1..=n {
+        if i == 1 || i == n{
+            println!("{}", "*".repeat(m)); 
+        }else {
+            println!("{}{}{}", "*", " ".repeat(m - 2), "*"); 
         }
     }
 }
 
+fn hollow_square(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for i in 1..=n {
+        if i == 1 || i == n{
+            println!("{}", "*".repeat(n as usize)); 
+        }else {
+            println!("{}{}{}", "*", " ".repeat(n as usize - 2), "*"); 
+        }
+    }
+}
+
+fn square(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for _ in 1..=n {
+        println!("{}", "*".repeat(n as usize)); 
+    }
+}
+
+fn m_stars(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let mut parts = input.split_whitespace(); 
+    let n= parts.next().unwrap().trim().parse().unwrap(); 
+    let m: usize = parts.next().unwrap().trim().parse().unwrap(); 
+
+    for _ in 1..=n {
+         
+        println!("{}", "*".repeat(m))
+    }
+}
+
+fn two_stars() {
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let n: u32 = input.trim().parse().unwrap();
+
+    for _ in 1..=n {
+        println!("**"); 
+    }
+}
