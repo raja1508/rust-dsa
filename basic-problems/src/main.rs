@@ -1,169 +1,126 @@
-use std::{io, ops::Mul};
+use std::io; 
+
 
 fn main(){
-    hello_function();
-    print_factors();
-    print_factors_reverse();
-    check_prime();
-    print_prime();
-    count_zeros();
-    find_hcf();
-    find_nCr();
+    print_array_in_reverse();
+    print_sum_of_array();
+    minimum_element();
+    maximum_element();
+    search_element();
 }
 
-fn factorial(n: u32) -> u32 {
-    if n == 0 {
-        return 1; 
-    }
-
-    let mut fact = 1; 
-
-    for i in 1..=n {
-        fact *= i; 
-    }
-
-    return fact; 
-}
-
-fn find_nCr(){
+fn search_element(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
+    io::stdin().read_line(&mut input).unwrap(); 
     let mut parts = input.split_whitespace(); 
-    let  n: u32 = parts.next().unwrap().parse().unwrap();
-    let  r: u32 = parts.next().unwrap().parse().unwrap();
-
-    let nCr = factorial(n).checked_div(factorial(r).mul(factorial(n - r))).unwrap(); 
-    print!("{}", nCr); 
-
-
-}
-
-
-fn find_hcf(){
+    let n: usize = parts.next().unwrap().trim().parse().unwrap();
+    let target: i32 = parts.next().unwrap().trim().parse().unwrap();
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let mut parts = input.split_whitespace(); 
-    let mut a: u32 = parts.next().unwrap().parse().unwrap();
-    let mut b: u32 = parts.next().unwrap().parse().unwrap();
-
-    if a == 0 {
-        print!("{}", b); 
-        return 
+    io::stdin().read_line(&mut input).unwrap();  
+    let mut input_array = input.split_whitespace(); 
+    let mut v: Vec<i32> = Vec::new(); 
+    for _ in 1..=n {
+        v.push(input_array.next().unwrap().parse().unwrap());
     }
 
-    while b % a != 0 {
-        let temp = b % a ; 
-        b = a ; 
-        a = temp ; 
+    let mut found = false;  
 
+    for i in 1..n {
+        if target == v[i]{
+            found = true; 
+        }  
     }
-
-    println!("{}", a)
-}
-
-fn count_zeros() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let mut n: u64 = input.trim().parse().unwrap(); 
-
-    let mut count = 0u32;
-
-    if n == 0 {
-        count += 1; 
-    }
-
-    while n > 0 {
-        if  n % 10 == 0 {
-            count += 1; 
-        }
-        n = n / 10; 
-    }
-
-    print!("{}", count)
-}
-
-fn print_prime() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let n: u32 = input.trim().parse().unwrap(); 
-
-    for i in 2..=n {
-        if is_prime(i){
-            print!("{} ", i)
-        }
-    }
-
-}
-
-fn is_prime(n: u32) -> bool {
-    let mut idx = 2u32;
-    let mut is_prime = true;
-
-    if n == 1 {
-        is_prime = false; 
-    } 
-
-    while idx < n {
-        if  n % idx == 0 {
-            is_prime = false; 
-            break;
-        }
-        idx +=1 ;
-    }
-
-    return is_prime; 
-}
-
-fn check_prime() {
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let n: u32 = input.trim().parse().unwrap(); 
-
-    if is_prime(n) {
-        print!("Prime")
+     
+    if found {
+        print!("YES"); 
     }else {
-        print!("Not Prime")
+        print!("NO"); 
     }
 }
 
-fn print_factors_reverse() {
+fn maximum_element(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let n: u32 = input.trim().parse().unwrap(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: usize = input.trim().parse().unwrap();
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();  
+    let mut input_array = input.split_whitespace(); 
+    let mut v: Vec<i32> = Vec::new(); 
+    for _ in 1..=n {
+        v.push(input_array.next().unwrap().parse().unwrap());
+    }
 
-    let mut idx = n;  
+    let mut max_idx: usize = 0; 
 
-    while idx > 0 {
-        if  n % idx == 0 {
-            print!("{} ", idx)
+    for i in 1..n {
+        if v[max_idx] < v[i]{
+            max_idx = i; 
         }
-        idx -=1 ;
+        
     }
+    print!("{} {}", v[max_idx], max_idx + 1); 
+
 }
 
-
-fn print_factors() {
+fn minimum_element(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let n: u32 = input.trim().parse().unwrap(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: usize = input.trim().parse().unwrap();
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();  
+    let mut input_array = input.split_whitespace(); 
+    let mut v: Vec<i32> = Vec::new(); 
+    for _ in 1..=n {
+        v.push(input_array.next().unwrap().parse().unwrap());
+    }
 
-    let mut idx = 1u32;  
+    let mut min_idx: usize = 0; 
 
-    while idx <= n {
-        if  n % idx == 0 {
-            print!("{} ", idx)
+    for i in 1..n {
+        if v[min_idx] > v[i]{
+            min_idx = i; 
         }
-        idx +=1 ;
+        
     }
+    print!("{} {}", v[min_idx], min_idx + 1); 
+
 }
 
-fn hello_function(){
+fn print_sum_of_array(){
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();
-    let n = input.trim().parse().unwrap(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: i32 = input.trim().parse().unwrap();
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();  
+    let mut parts = input.split_whitespace(); 
+
+    let mut sum = 0 ;
 
     for _ in 1..=n {
-        println!("I am learning functions")
-    } 
+        let a : i32 = parts.next().unwrap().trim().parse().unwrap(); 
+        sum += a ; 
+    }
+
+    print!("{}", sum)
+}
+
+
+fn print_array_in_reverse(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: usize = input.trim().parse().unwrap();
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();  
+    let mut input_array = input.split_whitespace(); 
+    // println!("{:?}", input_array)
+    let mut v = Vec::new(); 
+    for _ in 1..=n {
+        v.push(input_array.next().unwrap());
+    }
+
+    for i in (0..n).rev() {
+        print!("{} ", v.get(i).unwrap())
+    }
+
 }
 
