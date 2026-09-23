@@ -1,361 +1,314 @@
 use std::io;
 
 fn main(){
-    // row_order();
-    // column_order();
-    // find_maximum();
-    // search_2d();
-    // row_minimum();
-    // column_sum();
-    // row_with_max_1s();
-    // wave_1();
-    // wave_2();
-    boundary_traversal();
+    // char_to_ascii();
+    // ascii_to_char();
+    // char_type();
+    // convert_to_lowercase();
+    // are_brothers();
+    // lexicographical_order();
+    // replace_character();
+    // remove_character();
+    // trim_spaces();
+    // toggle_case();
+    // strong_password();
+    // reverse();
+    // palindrome();
+    // count_words();
+
 }
 
-fn boundary_traversal(){
+
+fn count_words(){
     let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let sentence : String = input.trim().parse().unwrap(); 
 
-    io::stdin().read_line(&mut input).unwrap(); 
+    let words: Vec<&str> = sentence.split_whitespace().into_iter().collect(); 
+    println!("{}", words.len())
 
-    let mut parts = input.split_whitespace(); 
-
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
-
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
-    }
-
-    for k in 0..m {
-        let row  = 0; 
-        let col = k; 
-        print!("{} ", matrix[row][col])
-    }
-    
-    for k in 1..n {
-        let row  = k; 
-        let col = m - 1; 
-        print!("{} ", matrix[row][col])
-    }
-    
-    if n > 1 && m > 1 {  
-        for k in  (0..=m-2).rev(){
-            let row  = n - 1; 
-            let col = k; 
-            print!("{} ", matrix[row][col])
-        }
-        
-    
-        for k in  (1..=n-2).rev(){
-            let row  = k; 
-            let col = 0; 
-            print!("{} ", matrix[row][col])
-        }
-    }
 }
 
-fn wave_2(){
+fn palindrome(){
     let mut input = String::new(); 
-
-    io::stdin().read_line(&mut input).unwrap(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
     
-    let mut parts = input.split_whitespace(); 
-    
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-    
-     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
+    let char_array: Vec<char> = word.chars().collect();
+    let mut ans: Vec<char>  = Vec::default(); 
 
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
+    for i in (0..char_array.len()).rev() {
+        let ch = char_array[i];  
+        ans.push(ch);
 
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
     }
 
-    for i in 0..m{
-        for j in 0..n {
-            let row = if i % 2 == 0 {
-                j
-            }else {
-                n - 1 - j 
-            };
-            
-            print!("{} ", matrix[row][i])
-        }
-    }
-}
-
-fn wave_1(){
-    let mut input = String::new(); 
-
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let mut parts = input.split_whitespace(); 
-
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
-
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
-    }
-
-    for i in 0..n{
-        for j in 0..m {
-
-            let col = if i % 2 == 0 {
-                j
-            }else {
-                m - 1 - j 
-            };
-
-            print!("{} ", matrix[i][col])
-        }
-    }
-}
-
-fn row_with_max_1s(){
-    let mut input = String::new(); 
-
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let mut parts = input.split_whitespace(); 
-
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-    let mut count = vec![0; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();
-
-        for _ in 0..m {
-            let current_element: u32  = parts.next().unwrap().parse().unwrap();
-            if current_element == 1{
-                count[i] += 1; 
-            }
-        }
-    }
-    
-    let mut row_max = 0; 
-    for i in 1..n{
-        if count[i] > count[row_max]{
-            row_max = i; 
-        }
-    }
-
-    if count[row_max] == 0 {
-        println!("{}", -1)
+    if ans.iter().collect::<String>() == char_array.iter().collect::<String>(){
+        print!("YES")
     }else {
-        println!("{}", row_max)
-    }
-}
-
-fn column_sum(){
-    let mut input = String::new(); 
-
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let mut parts = input.split_whitespace(); 
-
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
-
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
-    }
-
-    for i in 0..m{
-        let mut sum = 0; 
-        for j in 0..n {
-            sum += matrix[j][i]; 
-        }
-
-        print!("{} ", sum)
-    }
-}
-
-fn row_minimum(){
-    let mut input = String::new(); 
-
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let mut parts = input.split_whitespace(); 
-
-    let n: i32 = parts.next().unwrap().parse().unwrap(); 
-
-    let m: i32 = parts.next().unwrap().parse().unwrap(); 
-
-    for _ in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();
-
-        let mut min: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        for _ in 0..m - 1{
-           let num: u32 = parts.next().unwrap().parse().unwrap();
-
-           if min > num {
-                min = num; 
-           }
-
-        }
-
-        print!("{} ", min)
+        print!("NO")
     }
 
 }
 
-fn search_2d(){
+fn reverse(){
     let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let mut char_array: Vec<char> = word.chars().collect();
+    let mut ans: Vec<char>  = Vec::default(); 
 
-    io::stdin().read_line(&mut input).unwrap(); 
+    for _ in 0..char_array.len() {
+        if let Some(ch) = char_array.pop(){
+            ans.push(ch);
+        }; 
+    }
+    print!("{}", ans.iter().collect::<String>()); 
 
-    let mut parts = input.split_whitespace(); 
+}
 
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-    let target: u32 = parts.next().unwrap().parse().unwrap();
+fn strong_password(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let char_array: Vec<char> = word.chars().collect();
 
-    let mut found = false; 
+    let mut password_parameters = vec![0; 4]; 
 
-    for _ in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();
+    let mut is_strong = true; 
 
-        for _ in 0..m {
-           let num = parts.next().unwrap().parse().unwrap();
+    if char_array.len() != 10 {
+        is_strong = false; 
+    }
 
-           if target == num {
-                found = true
-           }    
+    for i in 0..char_array.len(){
+        if char_array[i].is_ascii_lowercase() {
+            password_parameters[0] += 1; 
+        }else if char_array[i].is_ascii_uppercase() {
+            password_parameters[1] += 1; 
+        }else if char_array[i].is_ascii_digit(){
+            password_parameters[2] += 1; 
+        }else{
+            password_parameters[3] += 1; 
+        }
+
+    }
+
+    for k in 0..password_parameters.len(){
+        if password_parameters[k] == 0 {
+            is_strong = false; 
         }
     }
 
-    if found {
-        println!("true")
+    if is_strong {
+        print!("Strong")
     }else {
-        println!("false")
+        print!("Weak")
     }
 
 }
 
-fn find_maximum(){
+fn toggle_case(){
     let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let char_array: Vec<char> = word.chars().collect();
+    let mut ans: Vec<char>  = Vec::default(); 
 
-    io::stdin().read_line(&mut input).unwrap(); 
+    for i in 0..char_array.len() {
+        if char_array[i].is_ascii_lowercase(){
+            ans.push(char_array[i].to_ascii_uppercase());
+        }else{
+            ans.push(char_array[i].to_ascii_lowercase());
+        }
+    }
+    print!("{}", ans.iter().collect::<String>()); 
 
-    let mut parts = input.split_whitespace(); 
+}
 
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
+fn trim_spaces(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let char_array: Vec<char> = word.chars().collect();
+    let mut ans: Vec<char>  = Vec::default(); 
 
-    let mut max = 0u32; 
+    for i in 0..char_array.len() {
+        if ' ' == char_array[i]{
+            continue;
+        }else{
+            ans.push(char_array[i]);
+        }
+    }
+    print!("{}", ans.iter().collect::<String>()); 
 
-    for _ in 0..n{
+}
+
+fn remove_character(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let char_array: Vec<char> = word.chars().collect(); 
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let ch: char = input.trim().parse().unwrap(); 
+    
+    let mut ans: Vec<char>  = Vec::default(); 
+
+    for i in 0..char_array.len() {
+        if ch == char_array[i]{
+            continue;
+        }else{
+            ans.push(char_array[i]);
+        }
+    }
+    print!("{}", ans.iter().collect::<String>()); 
+
+}
+
+fn replace_character(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let word: String = input.trim().parse().unwrap(); 
+    
+    let mut char_array: Vec<char> = word.chars().collect(); 
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap();
+    let mut parts = input.split_whitespace();
+    let char1: char = parts.next().unwrap().parse().unwrap();
+    let char2: char = parts.next().unwrap().parse().unwrap();
+
+    for i in 0..char_array.len() {
+        if char1 == char_array[i]{
+            char_array[i] = char2; 
+        }
+    }
+    print!("{}", char_array.iter().collect::<String>()); 
+
+}
+
+fn lexicographical_order(){
+    let mut words = vec![String::default(); 2];
+
+    for i in 0..2{
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap();
         let mut parts = input.split_whitespace();
-
-        for _ in 0..m {
-           let num = parts.next().unwrap().parse().unwrap();
-
-           if max < num {
-                max = num; 
-           }    
-        }
+        let word: &str = parts.next().unwrap();
+        words[i] = word.to_string(); 
     }
 
-    println!("{}", max)
+    let  word_1: Vec<char> = words[0].chars().collect(); 
+    let  word_2: Vec<char> = words[1].chars().collect();
+
+    let  (mut ans , len) = if word_1.len() < word_2.len() {
+        ("A".to_string(), word_1.len())
+    }else if word_2.len() < word_1.len(){
+        ("B".to_string(), word_2.len())
+    }else {
+        ("Equal".to_string(), word_1.len())
+    };
+
+    for i in 0..len {
+        if word_1[i] > word_2[i]{
+            ans = "B".to_string(); 
+            break; 
+        }else if word_1[i] < word_2[i]{
+            ans = "A".to_string(); 
+            break;
+        }else {
+            continue;
+        }
+    }
+    print!("{}", ans); 
 
 }
 
-fn column_order(){
+fn are_brothers(){
+    let mut last_names = vec![String::default(); 2];
+
+    for i in 0..2{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace();
+        let _ = parts.next().unwrap(); 
+        let last_name = parts.next().unwrap();
+        last_names[i] = last_name.to_string(); 
+
+    }
+
+    if last_names[0] == last_names[1]{
+        print!("YES")
+    }else {
+        print!("NO")
+    }
+     
+}
+
+fn convert_to_lowercase(){
     let mut input = String::new(); 
 
     io::stdin().read_line(&mut input).unwrap(); 
 
-    let mut parts = input.split_whitespace(); 
+    let ch : char = input.trim().parse().unwrap(); 
 
-    let n= parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
-
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
+    if ch.is_ascii_uppercase(){
+        let uc = ch.to_ascii_lowercase(); 
+        print!("{}", uc); 
+        return; 
     }
 
-    for i in 0..m{
-        for j in 0..n {
-            print!("{} ", matrix[j][i])
-        }
-    }
+    print!("{}", ch); 
 }
 
-fn row_order(){
+fn char_type(){
     let mut input = String::new(); 
 
     io::stdin().read_line(&mut input).unwrap(); 
 
-    let mut parts = input.split_whitespace(); 
+    let ch : char = input.trim().parse().unwrap(); 
 
-    let n = parts.next().unwrap().parse().unwrap(); 
-    let m = parts.next().unwrap().parse().unwrap();
-
-    let mut matrix: Vec<Vec<u32>> = vec![vec![0; m]; n]; 
-
-    for i in 0..n{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();
-        let mut parts = input.split_whitespace();  
-
-        for j in 0..m {
-            matrix[i][j] = parts.next().unwrap().parse().unwrap();
-        }
+    if ch.is_ascii_lowercase(){
+        print!("Lowercase"); 
+        return; 
     }
 
-    for i in 0..matrix.len(){
-        for j in 0..matrix[i].len() {
-            print!("{} ", matrix[i][j])
-        }
+    if ch.is_ascii_uppercase(){
+        print!("Uppercase"); 
+        return; 
     }
+
+    if ch.is_ascii_digit(){
+        print!("Digit");
+        return
+    }
+
+    println!("Special"); 
+}
+
+fn ascii_to_char(){
+    let mut input = String::new(); 
+
+    io::stdin().read_line(&mut input).unwrap(); 
+
+    let ascii : u8 = input.trim().parse().unwrap(); 
+
+    println!("{}", ascii as char); 
+}
+
+fn char_to_ascii(){
+    let mut input = String::new(); 
+
+    io::stdin().read_line(&mut input).unwrap(); 
+
+    let ch : char = input.trim().parse().unwrap(); 
+
+    println!("{}", ch as u8); 
 }
