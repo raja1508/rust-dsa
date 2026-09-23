@@ -1,13 +1,12 @@
 use std::io; 
 
-
 fn main(){
-//     print_array_in_reverse();
-//     print_sum_of_array();
-//     minimum_element();
-//     maximum_element();
-//     search_element();
-//     count_occurrences();
+    // print_array_in_reverse();
+    // print_sum_of_array();
+    // minimum_element();
+    // maximum_element();
+    // search_element();
+    // count_occurrences();
     // is_sorted();
     // sort_1();
     // reverse();
@@ -15,7 +14,49 @@ fn main(){
     // swap_alternate();
     // duplicate_number();
     // missing_number();
-    intersection();
+    // intersection();
+    // pair_sum(); 
+}
+
+fn pair_sum(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let t: usize = input.trim().parse().unwrap();
+
+    for _ in 1..=t {
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap(); 
+        let n: usize = input.trim().parse().unwrap();
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();  
+        let mut input_array = input.split_whitespace(); 
+
+        let mut v: Vec<i32> = Vec::new(); 
+        for _ in 1..=n {
+            v.push(input_array.next().unwrap().parse().unwrap());
+        }
+
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap(); 
+        let target_sum: u32  = input.trim().parse().unwrap();
+        let mut pairs = 0; 
+
+        for j in 0..v.len() - 1 {
+            for k in j + 1..v.len() {
+                let current_sum = v[j] + v[k]; 
+
+                if current_sum < 0 {
+                    continue
+                }
+
+                if target_sum == (current_sum) as u32{
+                    pairs += 1; 
+                }
+            }
+        }
+
+        println!("{}", pairs)
+    }
 }
 
 fn intersection(){
@@ -28,10 +69,12 @@ fn intersection(){
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap(); 
         let n: usize = input.trim().parse().unwrap();
+
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap();  
         let mut input_array = input.split_whitespace(); 
-        let mut v: Vec<i32> = Vec::new(); 
+
+        let mut v: Vec<u32> = Vec::new(); 
         for _ in 1..=n {
             v.push(input_array.next().unwrap().parse().unwrap());
         }
@@ -52,20 +95,17 @@ fn intersection(){
 
         let mut j = 0; 
         while  j < v2[i].len() && ans_length < max_ans_length {
-            let mut count = 0; 
 
             for k in 0..v2[i + 1].len() {
                 if v2[i][j] == v2[i + 1][k]{
-                    count += 1; 
+                    let ans = v2[i][j];
+                    ans_length += 1;  
+                    print!("{} ", ans); 
+                    break; 
                 }
                 
             }
             
-            if count == 1 {
-                let ans = v2[i][j];
-                ans_length += 1;  
-                print!("{} ", ans); 
-            }
             j += 1; 
         } 
         println!(); 
@@ -73,8 +113,6 @@ fn intersection(){
      }
         
 }
-
-
 
 fn duplicate_number(){
     let mut input = String::new(); 
@@ -195,11 +233,11 @@ fn swap_alternate(){
     for _ in 1..=k {
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap(); 
-        let n: usize = input.trim().parse().unwrap();
+        let n: u32 = input.trim().parse().unwrap();
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap();  
         let mut input_array = input.split_whitespace(); 
-        let mut v: Vec<i32> = Vec::new(); 
+        let mut v: Vec<u32> = Vec::new(); 
         for _ in 1..=n {
             v.push(input_array.next().unwrap().parse().unwrap());
         }
@@ -215,8 +253,7 @@ fn swap_alternate(){
         }else {
             iterations = len - 1 
         }
-        if len > 2 {
-
+        if len >= 2 {
             let mut j = 0; 
             while  j < iterations - 1 {
                 v2[i].swap(j, j + 1);
@@ -239,12 +276,14 @@ fn arrange_number(){
     let k: usize = input.trim().parse().unwrap();
     let mut v2 = Vec::new(); 
 
-    for _ in 1..=k {
+    for idx in 0..k {
         let mut input = String::new(); 
         io::stdin().read_line(&mut input).unwrap(); 
         let n: usize = input.trim().parse().unwrap();
+
         let mut v: Vec<i32> = Vec::new(); 
         let mut temp: Vec<i32> = Vec::new();
+
         for i in 1..=n {
             if i % 2 == 0 {
                 temp.push(i as i32);
@@ -258,17 +297,16 @@ fn arrange_number(){
             v.push(element);
         }
         v2.push(v);
+
+
+        let len = v2[idx].len(); 
+        for j in 0..len{
+            print!("{} ", v2[idx][j]) 
+        }
+
+        println!(); 
     }
     
-    for i in 0..k {
-        let len = v2[i].len(); 
-        for j in 0..len{
-            let v = v2[i].clone();
-            print!("{} ", v[j]) 
-        }
-        println!()
-         
-    }
 }
 
 fn reverse() {
@@ -299,7 +337,6 @@ fn reverse() {
         print!("{} ", v[i])
     }
 }
-
 
 fn sort_1(){
     let mut input = String::new(); 
@@ -477,16 +514,15 @@ fn print_sum_of_array(){
     io::stdin().read_line(&mut input).unwrap();  
     let mut parts = input.split_whitespace(); 
 
-    let mut sum = 0 ;
+    let mut sum: i64 = 0 ;
 
     for _ in 1..=n {
         let a : i32 = parts.next().unwrap().trim().parse().unwrap(); 
-        sum += a ; 
+        sum += a as i64; 
     }
 
     print!("{}", sum)
 }
-
 
 fn print_array_in_reverse(){
     let mut input = String::new(); 
