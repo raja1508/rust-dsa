@@ -8,6 +8,130 @@ fn main(){
     // row_minimum();
     // column_sum();
     // row_with_max_1s();
+    // wave_1();
+    // wave_2();
+    boundary_traversal();
+}
+
+fn boundary_traversal(){
+    let mut input = String::new(); 
+
+    io::stdin().read_line(&mut input).unwrap(); 
+
+    let mut parts = input.split_whitespace(); 
+
+    let n= parts.next().unwrap().parse().unwrap(); 
+    let m = parts.next().unwrap().parse().unwrap();
+
+     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
+
+    for i in 0..n{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace();  
+
+        for j in 0..m {
+            matrix[i][j] = parts.next().unwrap().parse().unwrap();
+        }
+    }
+
+    for k in 0..m {
+        let row  = 0; 
+        let col = k; 
+        print!("{} ", matrix[row][col])
+    }
+    
+    for k in 1..n {
+        let row  = k; 
+        let col = m - 1; 
+        print!("{} ", matrix[row][col])
+    }
+    
+    if n > 1 && m > 1 {  
+        for k in  (0..=m-2).rev(){
+            let row  = n - 1; 
+            let col = k; 
+            print!("{} ", matrix[row][col])
+        }
+        
+    
+        for k in  (1..=n-2).rev(){
+            let row  = k; 
+            let col = 0; 
+            print!("{} ", matrix[row][col])
+        }
+    }
+}
+
+fn wave_2(){
+    let mut input = String::new(); 
+
+    io::stdin().read_line(&mut input).unwrap(); 
+    
+    let mut parts = input.split_whitespace(); 
+    
+    let n= parts.next().unwrap().parse().unwrap(); 
+    let m = parts.next().unwrap().parse().unwrap();
+    
+     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
+
+    for i in 0..n{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace();  
+
+        for j in 0..m {
+            matrix[i][j] = parts.next().unwrap().parse().unwrap();
+        }
+    }
+
+    for i in 0..m{
+        for j in 0..n {
+            let row = if i % 2 == 0 {
+                j
+            }else {
+                n - 1 - j 
+            };
+            
+            print!("{} ", matrix[row][i])
+        }
+    }
+}
+
+fn wave_1(){
+    let mut input = String::new(); 
+
+    io::stdin().read_line(&mut input).unwrap(); 
+
+    let mut parts = input.split_whitespace(); 
+
+    let n= parts.next().unwrap().parse().unwrap(); 
+    let m = parts.next().unwrap().parse().unwrap();
+
+     let mut matrix: Vec<Vec<i32>> = vec![vec![0; m]; n]; 
+
+    for i in 0..n{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace();  
+
+        for j in 0..m {
+            matrix[i][j] = parts.next().unwrap().parse().unwrap();
+        }
+    }
+
+    for i in 0..n{
+        for j in 0..m {
+
+            let col = if i % 2 == 0 {
+                j
+            }else {
+                m - 1 - j 
+            };
+
+            print!("{} ", matrix[i][col])
+        }
+    }
 }
 
 fn row_with_max_1s(){
