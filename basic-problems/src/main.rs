@@ -1,592 +1,406 @@
-use std::io;
+use std::{collections::{HashMap, HashSet}, io};
 
-fn main() {
-    // range_sum_query();
-    // even_sum_query();
-    // count_vowels();
-    // range_sum_of_squares();
-    // let ans = have_exactly_k_factors(6, 3); 
-    // if ans {
-    //     print!("YES")
-    // }else{
-    //     print!("NO")
-    // }
-    // count_numbers_with_digit_sum_k();
-    // count_numbers_with_exactly_k_factors();
-    // ** alternating_range_sum();
-    // print_all_subarrays();
-    // sum_of_all_subarrays_separately();
-    // sum_of_all_subarrays_separately_hard();
-    // sum_of_all_subarrays_easy();
-    // sum_of_all_subarrays_hard();
-    maximum_subarray_sum_of_size_k();
-    
+fn main(){
+    // count_distinct();
+    // search_queries();
+    // count_distinct_queries();
+    // count_distinct_queries_2();
+    // union_of_two_arrays();
+    // intersection_of_two_arrays();
+    // intersection_of_two_arrays_2();
+    // two_sum();
+    // two_sum_2();
+    two_sum_3();
 }
 
-fn maximum_subarray_sum_of_size_k() {
+fn two_sum_3(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
+    let mut parts = input.split_whitespace(); 
     let n: u32 = parts.next().unwrap().parse().unwrap();
-    let k: u32 = parts.next().unwrap().parse().unwrap();  
-    
-    let mut v: Vec<i64> = Vec::new(); 
-    
+    let x: i64 = parts.next().unwrap().parse().unwrap();  
+
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
+    io::stdin().read_line(&mut input).unwrap(); 
     let mut parts = input.split_whitespace(); 
+
+    let mut map: HashMap<i64, u64> = HashMap::new(); 
+
+    let mut count = 0; 
     
     for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
+        let v: i64 = parts.next().unwrap().parse().unwrap();
 
-    let mut max_length = 0; 
-
-    for i in 0..v.len() {
-        let mut sum = v[i]; 
-        let mut count = 1; 
-        
-        for j in i + 1..v.len() {                                   
-            sum += v[j]; 
-            count += 1;                                                                             
-
-            if sum as u32 == k {
-                if count > max_length {
-                    max_length = count; 
-                    break; 
-                }
-            }
+        if let Some(value) = map.get(&v) {
+            count += value;            
         }
+
+        let f: i64 = x - v ; 
+        map.entry(f)
+        .and_modify(|v| *v += 1)
+        .or_insert(1);  
     }
-    println!("{}", max_length); 
+
+    println!("{}", count); 
 }
 
-fn get_frequency(v: &Vec<i64>, i: usize) -> usize{
-    let mut fq = 1; 
-
-    let left_fq = (v.len() - i) * i;
-    let righ_fq = v.len() - i  - 1; 
-
-    fq += left_fq; 
-    fq += righ_fq;  
-
-    return  fq;
-}
-
-fn sum_of_all_subarrays_hard() {
+fn two_sum_2(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<i64> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
     let mut parts = input.split_whitespace(); 
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
+    let n: u32 = parts.next().unwrap().parse().unwrap();
+    let x: i64 = parts.next().unwrap().parse().unwrap();  
 
-    let mut sum = 0; 
-    for i in 0..v.len() {
-        let frequency = get_frequency(&v, i) as i64;  
-        sum += v[i] * frequency; 
-    }
-    println!("{}", sum); 
-}
-
-fn sum_of_all_subarrays_easy() {
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<i64> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
     let mut parts = input.split_whitespace(); 
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
 
-    let mut sum = 0; 
-    for i in 0..v.len() {
-        let mut internal_sum = v[i]; 
-        sum += internal_sum; 
-        for j in i + 1..v.len() {
-            internal_sum += v[j];
-            sum += internal_sum;  
+    let mut map: HashMap<i64, u32> = HashMap::new(); 
+    
+    for i in 1..=n {
+        let v: i64 = parts.next().unwrap().parse().unwrap();
+
+        if let Some(value) = map.get(&v) {
+            println!("{} {}", *value, i);  
+            return; 
         }
+
+        let f: i64 = x - v ; 
+        map.insert(f, i); 
     }
-    println!("{}", sum); 
+
+    println!("{}", -1); 
 }
 
-fn sum_of_all_subarrays_separately_hard() {
+fn two_sum(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<i64> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
     let mut parts = input.split_whitespace(); 
+    let n: u32 = parts.next().unwrap().parse().unwrap();
+    let x: i64 = parts.next().unwrap().parse().unwrap();  
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+
+    let mut set: HashSet<i64> = HashSet::new(); 
+
+    let mut flag = false; 
     
     for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
+        let v: i64 = parts.next().unwrap().parse().unwrap();
 
-    for i in 0..v.len() {
-        let mut sum = v[i]; 
-        println!("{}", sum); 
-        for j in i + 1..v.len() {
-            sum += v[j]; 
-            println!("{}", sum); 
+        if let Some(_) = set.get(&v) {
+            flag = true; 
+            break; 
         }
+
+        let f = x - v ; 
+        set.insert(f); 
+    }
+
+    if flag {
+        println!("TRUE"); 
+    }else {
+        println!("FALSE"); 
     }
 }
 
-fn sum_of_all_subarrays_separately() {
+fn intersection_of_two_arrays_2(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<u32> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
-    let mut parts = input.split_whitespace(); 
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
+    let n: u32 = input.trim().parse().unwrap(); 
 
-    for i in 0..v.len() {
-        let mut  v2 = Vec::new(); 
-        v2.push(v[i]);
-        println!("{}", v[i]); 
-        for j in i + 1..v.len() {
-            v2.push(v[j]);
-            let mut sum = 0; 
-            for k in 0..v2.len(){
-                sum += v2[k]; 
-            }
-            println!("{}", sum); 
-        }
-    }
-}
-
-fn print_all_subarrays() {
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<u32> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
     let mut parts = input.split_whitespace(); 
+
+    let mut map1: HashMap<i64, u32> = HashMap::new(); 
     
     for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
+        map1.entry(parts.next().unwrap().parse().unwrap())
+        .and_modify(|v| *v += 1)
+        .or_insert(1);
     }
 
-    for i in 0..v.len() {
-        let mut  v2 = Vec::new(); 
-        v2.push(v[i]);
-        for j in i + 1..v.len() {
-            for k in 0..v2.len(){
-                print!("{} ", v2[k])
-            }
-            println!(); 
-            v2.push(v[j]);
-        }
-    }
-}
-
-fn alternating_range_sum(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
+    let n2: u32 = input.trim().parse().unwrap(); 
 
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-
-    let q: u32 = parts.next().unwrap().parse().unwrap();
-    
-    let mut v: Vec<u32> = Vec::new(); 
-    
+    let mut map2: HashMap<i64, u32> = HashMap::new(); 
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
+    io::stdin().read_line(&mut input).unwrap(); 
     let mut parts = input.split_whitespace(); 
     
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
+    for _ in 0..n2 {
+        map2.entry(parts.next().unwrap().parse().unwrap())
+        .and_modify(|v| *v += 1)
+        .or_insert(1);
     }
+    let mut v = Vec::new(); 
 
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut alternate_sum: i64 = 0; 
-
-        for (idx, i) in (l..=r).enumerate() {
-            if idx % 2 == 0 {
-                alternate_sum += v[i as usize - 1] as i64; 
+    for (key, value) in map1 {
+        if let Some(value2) = map2.get(&key) {
+            let iteration = if value > *value2 {
+                *value2
             }else {
-                alternate_sum -= v[i as usize - 1] as i64;
+                value
+            };
+
+            for _ in 0..iteration{
+                v.push(key);
             }
         }
-            
-        println!("{}", alternate_sum); 
-    } 
-}
-
-fn have_exactly_k_factors(n:u32, k: u32) -> bool {
-    let mut flag = false; 
-
-    let mut i: u32 = 1;
-    let mut count = 0; 
-
-    while i.pow(2) <= n && count <= k{
-        if i.pow(2) == n {
-            count += 1; 
-        }else if n % i == 0 {
-            count += 2; 
-        }
-
-        i += 1; 
-    } 
-    
-    if count == k {
-        flag = true; 
     }
-    
-    return flag; 
+
+    println!("{}", v.len()); 
+    v.sort();
+    for value in v{
+        print!("{} ", value)
+    }
+
+    println!()
 }
 
-fn count_numbers_with_exactly_k_factors(){
+fn intersection_of_two_arrays(){
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
+    let n: u32 = input.trim().parse().unwrap(); 
 
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-
-    let q: u32 = parts.next().unwrap().parse().unwrap();
-
-    let k: u32 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<u32> = Vec::new(); 
-    
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
+    io::stdin().read_line(&mut input).unwrap(); 
     let mut parts = input.split_whitespace(); 
+
+    let mut set1: HashSet<i64> = HashSet::new(); 
     
     for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
+        set1.insert(parts.next().unwrap().parse().unwrap());
     }
-    
-    let mut count = 0; 
 
-    for i in 0..v.len(){
-        let curr = v[i];
-        if have_exactly_k_factors(curr, k){
-            count += 1;  
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n2: u32 = input.trim().parse().unwrap(); 
+
+    let mut set2: HashSet<i64> = HashSet::new(); 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    
+    for _ in 0..n2 {
+        set2.insert(parts.next().unwrap().parse().unwrap());
+    }
+    let mut v = Vec::new(); 
+
+    for value in set1 {
+        if let Some(_) = set2.get(&value) {
+            v.push(value);
         }
-        v[i] = count; 
+    }
+
+    println!("{}", v.len()); 
+    v.sort();
+    for value in v{
+        print!("{} ", value)
+    }
+
+    println!()
+}
+
+
+fn union_of_two_arrays(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: u32 = input.trim().parse().unwrap(); 
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+
+    let mut set: HashSet<i64> = HashSet::new(); 
+    
+    for _ in 0..n {
+        set.insert(parts.next().unwrap().parse().unwrap());
+    }
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n2: u32 = input.trim().parse().unwrap(); 
+
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    
+    for _ in 0..n2 {
+        set.insert(parts.next().unwrap().parse().unwrap());
+    }
+    let mut v = Vec::new(); 
+
+    for value in set {
+        v.push(value); 
+    }
+
+    // for i in 0..v.len() {
+    //     let mut min = i; 
+    //     for j in i + 1..v.len() {
+    //         if v[min] > v[j] {
+    //             min = j
+    //         }
+    //     }
+
+    //     let temp = v[i]; 
+    //     v[i] = v[min]; 
+    //     v[min] = temp; 
+    // }
+
+    println!("{}", v.len()); 
+    v.sort();
+    for value in v{
+        print!("{} ", value)
+    }
+
+    println!()
+}
+
+fn count_distinct_queries_2() {
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let q: u32 = input.trim().parse().unwrap();
+
+    let mut map: HashMap<i64, u32>  = HashMap::new();   
+
+    for _ in 1..=q{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace(); 
+        let t: u8 = parts.next().unwrap().parse().unwrap();  
         
-    }
-
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
-        }else {
-            ans = v[r as usize - 1]
+        match t {
+            1 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                if let Some((_, value)) = map.get_key_value(&x) {
+                    map.insert(x, *value + 1 ); 
+                }else {
+                    map.insert(x, 1); 
+                }
+            },
+            2 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                if let Some((_, value)) = map.get_key_value(&x) {
+                    let new_value = *value - 1; 
+                    if new_value > 0 {
+                        map.insert(x, *value - 1 ); 
+                    }else {
+                        map.remove(&x); 
+                    }
+                }
+            },
+            3 => {
+                println!("{}", map.len())
+            },
+            4 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                if let Some(_) = map.get(&x) {
+                    println!("YES")
+                }else {
+                    println!("NO")
+                }; 
+            },
+            _ => {
+                
+            }
         }
-            
-        println!("{}", ans); 
-    } 
+
+    }
 }
 
-fn sum_of_digit(mut n: u32, k: u8) -> bool {
-    let mut flag = false; 
-
-    let mut sum: u8 = 0; 
-    while n > 0 && sum <= k{
-        let digit = n % 10; 
-        sum += digit as u8; 
-        n = n / 10; 
-    }
-
-    if sum == k {
-        flag = true; 
-    }
-
-    return flag;
-}
-
-fn count_numbers_with_digit_sum_k(){
+fn count_distinct_queries() {
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
+    let q: u32 = input.trim().parse().unwrap();
 
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
+    let mut set: HashSet<i64>  = HashSet::new();   
 
-    let q: u32 = parts.next().unwrap().parse().unwrap();
-
-    let k: u8 = parts.next().unwrap().parse().unwrap(); 
-    
-    let mut v: Vec<u32> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
-    let mut parts = input.split_whitespace(); 
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
-    
-    let mut count = 0; 
-
-    for i in 0..v.len(){
-        let curr = v[i];
-        if sum_of_digit(curr, k){
-            count += 1;  
-        }
-        v[i] = count; 
+    for _ in 1..=q{
+        let mut input = String::new(); 
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace(); 
+        let t: u8 = parts.next().unwrap().parse().unwrap();  
         
-    }
-
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
-        }else {
-            ans = v[r as usize - 1]
+        match t {
+            1 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                set.insert(x);   
+            },
+            2 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                set.remove(&x); 
+            },
+            3 => {
+                println!("{}", set.len())
+            },
+            4 => {
+                let x: i64 = parts.next().unwrap().parse().unwrap();
+                if let Some(_) = set.get(&x) {
+                    println!("YES")
+                }else {
+                    println!("NO")
+                }; 
+            },
+            _ => {
+                
+            }
         }
-            
-        println!("{}", ans); 
-    } 
+
+    }
 }
 
-fn range_sum_of_squares(){
+fn search_queries() {
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut parts = input.split_whitespace();  
-
-    let n: u32 = parts.next().unwrap().parse().unwrap(); 
-
-    let q: u32 = parts.next().unwrap().parse().unwrap();
-    
-    let mut v: Vec<i64> = Vec::new(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
     let mut parts = input.split_whitespace(); 
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
-    
-    let mut pre_sum = 0; 
 
-    for i in 0..v.len(){
-        let curr = v[i]; 
-        pre_sum += curr.pow(2); 
-        v[i] = pre_sum; 
-    }
-
-
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
-        }else {
-            ans = v[r as usize - 1]
-        }
-            
-        println!("{}", ans); 
-    } 
-}
-
-fn count_vowels(){
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let n: u32 = input.trim().parse().unwrap(); 
-    
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
-    let word : String = input.trim().parse().unwrap(); 
-    
-    let word_array: Vec<char> = word.chars().collect(); 
-    
-    let mut v: Vec<i64> = vec![0; word_array.len()]; 
-
-    let mut count = 0; 
-    
-    for (i, ch) in word_array.iter().enumerate() {
-        if *ch == 'a' || *ch == 'e' || *ch == 'i' || *ch =='o' || *ch == 'u' {
-            count += 1; 
-        }
-
-        v[i] = count;
-    }
-    
+    let n: u32 = parts.next().unwrap().parse().unwrap();
+    let q: u32 = parts.next().unwrap().parse().unwrap();  
 
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
 
-    let q: u32 = input.trim().parse().unwrap();
+    let mut map: HashMap<i64, u32> = HashMap::new(); 
+    
+    for i in 1..=n {
+        map.insert(parts.next().unwrap().parse().unwrap(), i);
+    }
 
-    for _ in 0..q{
+    for _ in 1..=q{
         let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
+        io::stdin().read_line(&mut input).unwrap();
+        let x: i64 = input.trim().parse().unwrap();  
 
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
+        if let Some(value) = map.get(&x){
+            println!("{}", *value); 
         }else {
-            ans = v[r as usize - 1]
-        }
-            
-        println!("{}", ans); 
-    } 
+            println!("{}", -1)
+        }; 
+
+    }
 }
 
-fn even_sum_query(){
+fn count_distinct() {
     let mut input = String::new(); 
     io::stdin().read_line(&mut input).unwrap(); 
 
     let n: u32 = input.trim().parse().unwrap(); 
 
-    let mut v: Vec<i64> = Vec::new(); 
-
     let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
-    let mut parts = input.split_whitespace();  
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
 
+    let mut set: HashSet<i64> = HashSet::new(); 
     
     for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
-    
-    let mut pre_sum = 0; 
-
-    for i in 0..v.len(){
-        if i % 2 != 0 {
-            let curr = v[i]; 
-            pre_sum += curr; 
-        } 
-
-        v[i] = pre_sum; 
+        set.insert(parts.next().unwrap().parse().unwrap());
     }
 
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let q: u32 = input.trim().parse().unwrap();
-
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
-        }else {
-            ans = v[r as usize - 1]
-        }
-            
-        println!("{}", ans); 
-    } 
-}
-
-fn range_sum_query(){
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let n: u32 = input.trim().parse().unwrap(); 
-
-    let mut v: Vec<i64> = Vec::new(); 
-
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap();    
-    let mut parts = input.split_whitespace();  
-
-    
-    for _ in 0..n {
-        v.push(parts.next().unwrap().parse().unwrap());
-    }
-    
-    let mut pre_sum = 0; 
-
-    for i in 0..v.len(){
-        let curr = v[i]; 
-        pre_sum += curr; 
-        v[i] = pre_sum; 
-    }
-
-    let mut input = String::new(); 
-    io::stdin().read_line(&mut input).unwrap(); 
-
-    let q: u32 = input.trim().parse().unwrap();
-
-    for _ in 0..q{
-        let mut input = String::new(); 
-        io::stdin().read_line(&mut input).unwrap();    
-        let mut parts = input.split_whitespace();
-
-        let l: u32 =   parts.next().unwrap().parse().unwrap(); 
-        let r: u32 = parts.next().unwrap().parse().unwrap(); 
-
-        let mut ans = 0; 
-        if l > 1 {
-            ans = v[r as usize - 1] - v[l as usize - 2]; 
-        }else {
-            ans = v[r as usize - 1]
-        }
-            
-        println!("{}", ans); 
-    } 
+    println!("{}", set.len())
 }
