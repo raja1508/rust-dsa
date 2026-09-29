@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
-members = ["basic-problems","rust-prerequisite"]
+members = ["basic-problems", "binary-search", "prefix-sum","rust-prerequisite", "sets-and-maps", "two-pointer"]
 
 [workspace.dependencies]

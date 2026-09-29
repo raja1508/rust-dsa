@@ -7,5 +7,21 @@ name = "basic-problems"
 version = "0.1.0"
 
 [[package]]
+name = "binary-search"
+version = "0.1.0"
+
+[[package]]
+name = "prefix-sum"
+version = "0.1.0"
+
+[[package]]
 name = "rust-prerequisite"
+version = "0.1.0"
+
+[[package]]
+name = "sets-and-maps"
+version = "0.1.0"
+
+[[package]]
+name = "two-pointer"
 version = "0.1.0"
