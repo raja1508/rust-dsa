@@ -12,8 +12,51 @@ fn main() {
     // two_sum_2();
     // two_sum_3();
     // subarray_sum_equals_x();
-    find_subarray_with_sum_x();
+    // find_subarray_with_sum_x();
+    count_subarrays_with_sum_x();
 }
+
+fn count_subarrays_with_sum_x(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u32 = parts.next().unwrap().parse().unwrap();
+    let x: i64 = parts.next().unwrap().parse().unwrap();  
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+  
+    let mut v = Vec::new(); 
+    let mut sum = 0; 
+    
+    for _ in 0..n {
+        let value: i64 = parts.next().unwrap().parse().unwrap();
+        sum += value; 
+        v.push(sum);
+ 
+    }
+
+    let mut count: u64 = 0; 
+    for i in 0..v.len(){
+        if v[i] == x {
+            count += 1;      
+        }
+    }
+
+    let mut map = HashMap::new(); 
+    for j in 1..v.len(){
+        let target = x  + v[j - 1];
+        map.entry(target).and_modify(|v| *v += 1).or_insert(1); 
+        if let Some(value) = map.get(&v[j]){
+            count += value; 
+        }
+
+    }
+    
+    println!("{}", count); 
+}
+
 
 fn find_subarray_with_sum_x(){
     let mut input = String::new(); 
@@ -44,12 +87,12 @@ fn find_subarray_with_sum_x(){
     }
 
     let mut map = HashMap::new(); 
-    for j in 0..v.len(){
+    for j in 1..v.len(){
         if let Some(value) = map.get(&v[j]){
             println!("{} {}", value , j + 1); 
             return;
         }
-        let target = x - v[j];
+        let target = x + v[j - 1];
         map.insert(target, j + 1);  
     }
     
@@ -89,12 +132,12 @@ fn subarray_sum_equals_x(){
     }
 
     let mut set = HashSet::new(); 
-    for j in 0..v.len(){
-        if let Some(v) = set.get(&v[j]){
+    for j in 1..v.len(){
+        if let Some(_) = set.get(&v[j]){
             flag = true; 
             break;
         }
-        let target = x - v[j];
+        let target = x  + v[j - 1];
         set.insert(target);  
     }
     
