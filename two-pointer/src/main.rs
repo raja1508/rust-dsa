@@ -3,7 +3,247 @@ fn main() {
     // max_subarray_sum_of_size_k();
     // count_vowels();
     // count_number_of_distinct_integer();
-    count_good_numbers();
+    // count_good_numbers();
+    // longest_subarray_with_sum_less_than_k();
+    // longest_substring_without_repeating_characters();
+    // longest_substring_with_atmost_k_distinct_characters();
+    // count_subarrays_with_sum_less_than_k();
+    smallest_subarray_with_sum_more_than_k();
+}
+
+fn smallest_subarray_with_sum_more_than_k(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();      
+    let k: u64 = parts.next().unwrap().parse().unwrap();
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+  
+    let mut v = Vec::new(); 
+    
+    for _ in 0..n {
+        let value: u64 = parts.next().unwrap().parse().unwrap(); 
+        v.push(value);
+ 
+    }
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = 0; 
+    let mut sum = 0; 
+
+    // for i in 0..v.len(){
+    //     sum += v[i]
+    // }
+
+    while r < v.len(){
+        while sum <= k {
+            sum += v[r]; 
+            r += 1;
+            count += 1;  
+        }
+
+        if count < ans {
+            ans = count; 
+        }
+    }
+
+    println!("{}", ans); 
+
+}
+
+
+fn count_subarrays_with_sum_less_than_k(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();      
+    let k: u64 = parts.next().unwrap().parse().unwrap();    
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+  
+    let mut v = Vec::new(); 
+    
+    for _ in 0..n {
+        let value: u64 = parts.next().unwrap().parse().unwrap(); 
+        v.push(value);
+ 
+    }
+
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = 0;
+    let mut sum = 0;
+
+    for i in 0..v.len() {
+        if v[i] < k {
+            count += 1; 
+        }
+    }  
+
+    sum += v[r]; 
+    r += 1; 
+
+    while r < v.len(){
+        if sum + v[r] < k {
+            sum += v[r]; 
+            let gap = r - l  + 1; 
+            if gap > 1 {
+                count += gap - 1; 
+            }
+            r += 1;
+        }else{
+            sum -= v[l];     
+            l += 1; 
+            // let gap = r - l; 
+            // if gap > 1 {
+            //     count += gap - 1; 
+            // }
+        }
+
+        if count > ans {
+            ans = count ; 
+        }
+    }
+
+    println!("{}", ans); 
+
+}
+
+fn longest_substring_with_atmost_k_distinct_characters(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();      
+    let k: usize = parts.next().unwrap().parse().unwrap();    
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let input_string: String = input.trim().parse().unwrap(); 
+    let chars: Vec<char> = input_string.chars().collect(); 
+
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = 0; 
+
+    let mut map: HashMap<char, u64> = HashMap::new(); 
+    while r < chars.len(){
+        map.entry(chars[r]).and_modify(|v| *v += 1).or_insert(1); 
+        // println!("{:?}", map); 
+        if map.len() <= k {
+            count += 1; 
+            r += 1;
+        }else{
+            map.remove(&chars[r]); 
+            if let Some(value) = map.get(&chars[l]){
+                if *value == 1 {
+                    map.remove(&chars[l]); 
+                }else{
+                    map.entry(chars[l]).and_modify(|v| *v -= 1);                     
+                }
+            } 
+            count -= 1; 
+            l += 1; 
+        }
+
+        if count > ans {
+            ans = count ; 
+        }
+    }
+
+    println!("{}", ans); 
+
+}
+
+fn longest_substring_without_repeating_characters(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let n: u64 = input.trim().parse().unwrap();      
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let input_string: String = input.trim().parse().unwrap(); 
+    let chars: Vec<char> = input_string.chars().collect(); 
+
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = 0; 
+
+    let mut set: HashSet<char> = HashSet::new(); 
+    while r < chars.len(){
+        if let Some(_) = set.get(&chars[r]){
+            set.remove(&chars[l]); 
+            l += 1;
+            count -= 1;  
+        }else {
+            count += 1; 
+            set.insert(chars[r]);  
+            r += 1;
+        }
+
+        if count > ans {
+            ans = count ; 
+        }
+    }
+
+    println!("{}", ans); 
+
+}
+
+fn longest_subarray_with_sum_less_than_k(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();      
+    let k: u64 = parts.next().unwrap().parse().unwrap();
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+  
+    let mut v = Vec::new(); 
+    
+    for _ in 0..n {
+        let value: u64 = parts.next().unwrap().parse().unwrap(); 
+        v.push(value);
+ 
+    }
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = 0; 
+    let mut sum = 0; 
+    while r < v.len() {
+        if sum + v[r] < k {
+            sum += v[r]; 
+            count += 1;
+            r += 1;  
+        }else{
+            sum -= v[l];  
+            count -= 1; 
+            l += 1;
+        }
+
+        if count > ans {
+            ans = count; 
+        }
+    }
+
+    println!("{}", ans); 
+
 }
 
 fn count_good_numbers(){
@@ -140,7 +380,6 @@ fn count_vowels() {
         print!("{} ", vowels_count); 
     }
 }
-
 
 fn max_subarray_sum_of_size_k(){
     let mut input = String::new(); 
