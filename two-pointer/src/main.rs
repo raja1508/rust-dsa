@@ -9,6 +9,72 @@ fn main() {
     // longest_substring_with_atmost_k_distinct_characters();
     // count_subarrays_with_sum_less_than_k();
     smallest_subarray_with_sum_more_than_k();
+    // count_subarrays_with_atmost_k_distict();
+}
+
+
+
+
+fn count_subarrays_with_atmost_k_distict(){
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();      
+    let k: u64 = parts.next().unwrap().parse().unwrap();    
+ 
+    let mut input = String::new(); 
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut parts = input.split_whitespace(); 
+  
+    let mut v = Vec::new(); 
+    
+    for _ in 0..n {
+        let value: u64 = parts.next().unwrap().parse().unwrap(); 
+        v.push(value);
+ 
+    }
+
+
+    let mut l: usize = 0; 
+    let mut r = 0; 
+    let mut ans = 0; 
+    let mut count = v.len() as u64;
+
+    // for i in 0..v.len() {
+    //     if v[i] < k {
+    //         count += 1; 
+    //     }
+    // }  
+
+
+    let mut map: HashMap<u64, u64> = HashMap::new(); 
+    while r < v.len(){
+        map.entry(v[r]).and_modify(|v| *v += 1).or_insert(1); 
+        // println!("{:?}", map); 
+        if map.len() <= k as usize{
+            let gap = r - l;
+            count += gap as u64; 
+            r += 1;
+        }else{
+            map.remove(&v[r]); 
+            if let Some(value) = map.get(&v[l]){
+                if *value == 1 {
+                    map.remove(&v[l]); 
+                }else{
+                    map.entry(v[l]).and_modify(|v| *v -= 1);                     
+                }
+            } 
+            l += 1; 
+        }
+
+        if count > ans {
+            ans = count ; 
+        }
+    }
+
+    println!("{}", ans); 
+
+
 }
 
 fn smallest_subarray_with_sum_more_than_k(){
@@ -32,19 +98,37 @@ fn smallest_subarray_with_sum_more_than_k(){
 
     let mut l: usize = 0; 
     let mut r = 0; 
-    let mut ans = 0; 
-    let mut count = 0; 
+    let mut ans: u64 = u64::MAX; 
+    let mut count: u64 = 0; 
     let mut sum = 0; 
 
-    // for i in 0..v.len(){
-    //     sum += v[i]
-    // }
+    while r < v.len() && sum <= k {
+        sum += v[r]; 
+        r += 1;
+        count += 1;  
+    }
 
-    while r < v.len(){
-        while sum <= k {
-            sum += v[r]; 
-            r += 1;
-            count += 1;  
+    
+    if sum > k {
+        ans = count; 
+    }
+    
+    
+    while r <= v.len(){
+        if sum - v[l] > k {
+            sum -= v[l]; 
+            count -= 1 ;
+            l += 1; 
+        }else{
+            if r == v.len(){
+                // if count < ans {
+                //     ans = count; 
+                // }
+                break; 
+            }
+            sum += v[r];
+            count += 1; 
+            r += 1;  
         }
 
         if count < ans {
@@ -52,10 +136,13 @@ fn smallest_subarray_with_sum_more_than_k(){
         }
     }
 
-    println!("{}", ans); 
+    if ans == u64::MAX {
+        println!("{}", -1);
+    }else {
+        println!("{}", ans); 
+    }
 
 }
-
 
 fn count_subarrays_with_sum_less_than_k(){
     let mut input = String::new(); 
@@ -88,9 +175,6 @@ fn count_subarrays_with_sum_less_than_k(){
             count += 1; 
         }
     }  
-
-    sum += v[r]; 
-    r += 1; 
 
     while r < v.len(){
         if sum + v[r] < k {
