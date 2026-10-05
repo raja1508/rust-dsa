@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "backtracking"
+version = "0.1.0"
+
+[[package]]
 name = "basic-problems"
 version = "0.1.0"
 
@@ -11,7 +15,19 @@ name = "binary-search"
 version = "0.1.0"
 
 [[package]]
+name = "bit-manipulation"
+version = "0.1.0"
+
+[[package]]
+name = "number-theory"
+version = "0.1.0"
+
+[[package]]
 name = "prefix-sum"
+version = "0.1.0"
+
+[[package]]
+name = "recursion"
 version = "0.1.0"
 
 [[package]]
