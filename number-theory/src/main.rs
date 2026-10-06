@@ -1,4 +1,4 @@
-use std::{io};
+use std::{collections::HashSet, io};
 
 fn main() {
     // factors_of_all_numbers();
@@ -7,21 +7,57 @@ fn main() {
     // prime_queries();
     // good_number_queries();
     // prime_range_queries();
-    prime_factorisation();
+    // prime_factorisation();
+    // unique_prime_factors();
+    // prime_factorise_queries();
+    almost_prime();
 }
-fn prime_factorisation(){
+
+fn almost_prime(){
     let mut input = String::new();  
     io::stdin().read_line(&mut input).unwrap(); 
-    let mut n: u64 = input.trim().parse().unwrap(); 
-    
+    let n: u64 = input.trim().parse().unwrap();  
     let mut v: Vec<u64> = vec![0; n as usize + 1]; 
 
     let mut i: usize = 2; 
+    while i < v.len() as usize{
+        if v[i] == 0 {
+            let mut j = 2*i;
+            while j < v.len() as usize {
+                v[j] += 1; 
+                j += i; 
+            } 
+        }
+            
+        i += 1; 
+    }
 
-    while i <= n as usize{
-        if v[i] == 0 as u64 {
+    // println!("{:?}", v); 
+
+    let mut count = 0; 
+    for k in 0..v.len(){
+        if v[k] == 2{
+            count += 1; 
+        }
+    }
+
+    println!("{}", count)
+    
+}
+
+fn prime_factorise_queries(){
+    let mut input = String::new();  
+    io::stdin().read_line(&mut input).unwrap(); 
+    let q: u64 = input.trim().parse().unwrap(); 
+    const N: u32 = 10u32.pow(6); 
+    let mut v: Vec<u64> = vec![0; N as usize + 1]; 
+
+    let mut i: usize = 2; 
+
+    while i < v.len() as usize{
+        if v[i] == 0 as u64{
             let mut j = i;
-            while j <= n as usize {
+            while j < v.len() as usize {
                 if v[j] == 0 {
                     v[j] = i as u64; 
                 }else {
@@ -35,18 +71,89 @@ fn prime_factorisation(){
         i += 1; 
     }
 
-    let mut t: u64;  
-    let mut count = 0;  
-    while n > 1 {
-        t = v[n as usize]; 
-        count += 1; 
-
-        n /= t; 
-        if n % t != 0 {
-            print!("{}^{} ", t, count); 
-            count = 0; 
+    for _ in 0..q{
+        let mut input = String::new();  
+        io::stdin().read_line(&mut input).unwrap(); 
+        let mut t: u64 = input.trim().parse().unwrap(); 
+        let mut count: u32 = 0;  
+        while t > 1 {
+            let p = v[t as usize]; 
+            count += 1; 
+    
+            t /= p; 
+            if t % p != 0 {
+                print!("{}^{} ", p, count); 
+                count = 0; 
+            }
         }
+        println!()
     }
+}
+
+fn unique_prime_factors(){
+    let mut input = String::new();  
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut n: u64 = input.trim().parse().unwrap(); 
+        // factor out 2
+
+    let mut set = HashSet::new(); 
+    while n % 2 == 0 {
+        n /= 2;
+        set.insert(2); 
+    }; 
+
+    // odd divisors only
+    let mut p: u64 = 3;
+    while p.pow(2) <= n {
+        if n % p == 0 {
+            set.insert(p); 
+            while n % p == 0 {
+                n /= p;
+            }
+        }
+        p += 2;
+    }
+
+    if n > 1 {
+        set.insert(n); 
+    }
+    println!("{}", set.len());
+
+}
+
+fn prime_factorisation(){
+    let mut input = String::new();  
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut n: u64 = input.trim().parse().unwrap(); 
+        // factor out 2
+    let mut count = 0;
+    while n % 2 == 0 {
+        n /= 2;
+        count += 1;
+    }
+    if count > 0 {
+        print!("2^{} ", count);
+    }
+
+    // odd divisors only
+    let mut p: u64 = 3;
+    while p.pow(2) <= n {
+        if n % p == 0 {
+            let mut count = 0;
+            while n % p == 0 {
+                n /= p;
+                count += 1;
+            }
+            print!("{}^{} ", p, count);
+        }
+        p += 2;
+    }
+
+        // leftover is a prime > 1
+    if n > 1 {
+        print!("{}^1", n);
+    }
+    println!();
 }
 
 fn prime_range_queries(){
