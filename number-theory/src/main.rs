@@ -1,11 +1,109 @@
-use std::io;
+use std::{io};
 
 fn main() {
     // factors_of_all_numbers();
     // factors_count_queries();
     // print_prime_from_1_to_n();
     // prime_queries();
-    good_number_queries();
+    // good_number_queries();
+    // prime_range_queries();
+    prime_factorisation();
+}
+fn prime_factorisation(){
+    let mut input = String::new();  
+    io::stdin().read_line(&mut input).unwrap(); 
+    let mut n: u64 = input.trim().parse().unwrap(); 
+    
+    let mut v: Vec<u64> = vec![0; n as usize + 1]; 
+
+    let mut i: usize = 2; 
+
+    while i <= n as usize{
+        if v[i] == 0 as u64 {
+            let mut j = i;
+            while j <= n as usize {
+                if v[j] == 0 {
+                    v[j] = i as u64; 
+                }else {
+                    if v[j] > i as u64 {
+                        v[j] = i as u64
+                    }
+                }
+                j += i; 
+            } 
+        }
+        i += 1; 
+    }
+
+    let mut t: u64;  
+    let mut count = 0;  
+    while n > 1 {
+        t = v[n as usize]; 
+        count += 1; 
+
+        n /= t; 
+        if n % t != 0 {
+            print!("{}^{} ", t, count); 
+            count = 0; 
+        }
+    }
+}
+
+fn prime_range_queries(){
+    let mut input = String::new();  
+    io::stdin().read_line(&mut input).unwrap();
+    let mut parts = input.split_whitespace(); 
+    let n: u64 = parts.next().unwrap().parse().unwrap();  
+    let q: u64 = parts.next().unwrap().parse().unwrap(); 
+
+    // const N: u64 = 10u64.pow(6); 
+    let mut v: Vec<bool> = vec![true;  n as usize + 1]; 
+    v[0] = false; 
+    v[1] = false; 
+
+    let mut i: usize = 2; 
+
+    while i.pow(2) <= n as usize{
+        if v[i] {
+            let mut j = i.pow(2); 
+            while j <= n as usize{
+                if v[j] {
+                    v[j] = false; 
+                }
+                j += i; 
+            }
+        }
+        i += 1; 
+    }
+
+    println!("{:?}", v); 
+
+    let mut v2: Vec<u64> = vec![0;  n as usize]; 
+    let mut count = 0; 
+    for k in 1..v.len(){
+        if v[k]{
+            count += 1; 
+        }
+        v2[k - 1] = count; 
+    }
+
+    println!("{:?}", v2); 
+
+    for _ in 0..q {
+        let mut input = String::new();  
+        io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace(); 
+        let l: u64 = parts.next().unwrap().parse().unwrap();  
+        let r: u64 = parts.next().unwrap().parse().unwrap();
+        let ans ; 
+        if l == 1 {
+            ans = v2[r as usize  - 1]; 
+        }else{
+            ans = v2[r as usize  - 1] - v2[l as usize - 2 ]
+        }
+
+        println!("{}", ans); 
+    }
 }
 
 fn good_number_queries(){
@@ -104,8 +202,8 @@ fn prime_queries(){
 fn print_prime_from_1_to_n(){
     let mut input = String::new();  
     io::stdin().read_line(&mut input).unwrap(); 
-
     let n: u64 = input.trim().parse().unwrap(); 
+
     let mut v: Vec<bool> = vec![true; n as usize + 1]; 
     v[0] = false; 
     v[1] = false; 
