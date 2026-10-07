@@ -1,11 +1,7 @@
-use std::println;
 
 fn main() {
-    let x = 1; 
-    let sum = |y| x + y; 
-    assert_eq!(3, sum(2));
-    println!("{}",x); 
-    let query = |x| x + 2; 
+    //closure
+    let query = |x| x ; 
     let mut casher = Casher::new(query); 
     let res = casher.value(2);
     println!("Casher value: {}", res); 
@@ -15,6 +11,7 @@ fn main() {
 }
 
 struct Casher<T> where T: Fn(u32) -> u32 {
+    //closure
     query: T,
     value: Option<u32>
 }
